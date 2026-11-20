@@ -4,100 +4,133 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ABU SAIF Ummah BD</title>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500&family=Plus+Jakarta+Sans:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500&family=Plus+Jakarta+Sans:wght@600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Plus Jakarta Sans','Hind Siliguri',sans-serif;background:#fdfcf8;height:100vh;display:flex;overflow:hidden}
+body{font-family:'Hind Siliguri','Plus Jakarta Sans',sans-serif;background:#fdfcf8;height:100vh;display:flex;overflow:hidden}
 #sidebar{width:280px;background:#f5f3ef;position:fixed;left:-280px;top:0;height:100%;z-index:99;transition:.3s;padding:16px;display:flex;flex-direction:column}
 #sidebar.open{left:0}
 #overlay{position:fixed;inset:0;background:#0004;display:none;z-index:98}
 #overlay.show{display:block}
-#main{flex:1;display:flex;flex-direction:column;width:100%}
-#top{padding:14px 18px;display:flex;justify-content:space-between}
-#top button{font-size:22px;border:0;background:none}
-#center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
-.logo{width:88px;height:88px;background:#fff;border-radius:50%;display:grid;place-items:center;box-shadow:0 4px 20px #0001;margin-bottom:16px;font-size:36px}
-#center h1{font-size:26px}
-#center p{color:#666;font-size:13px;margin-top:6px;line-height:1.4}
-.badge{margin-top:16px;background:#f1ece2;padding:8px 14px;border-radius:20px;font-size:12px}
-#msgs{max-width:760px;width:100%;margin:0 auto;flex:1;overflow:auto;padding:14px;display:none;flex-direction:column;gap:10px}
-.msg{padding:10px 14px;border-radius:14px;max-width:85%;font-size:14px}
-.msg.user{align-self:flex-end;background:#0A5C36;color:#fff}
-.msg.ai{align-self:flex-start;background:#fff;border:1px solid #eee}
-#inputArea{max-width:760px;width:100%;margin:0 auto;padding:12px}
-.wrap{background:#fff;border:1px solid #e8ddd0;border-radius:20px;padding:10px;box-shadow:0 4px 20px #0001}
-.wrap textarea{width:100%;border:0;outline:0;resize:none;font-size:15px}
-.bottom{display:flex;justify-content:space-between;margin-top:8px;align-items:center}
-.icon{width:34px;height:34px;border-radius:50%;border:0;background:#f3efe8;display:grid;place-items:center}
+#main{flex:1;display:flex;flex-direction:column;position:relative}
+#main::before{content:"";position:absolute;inset:0;background:url('https://i.ibb.co/ymYv8G0j/abusaif-logo.png') center/300px no-repeat;opacity:0.04;pointer-events:none;z-index:0}
+#top{padding:14px 18px;display:flex;justify-content:space-between;z-index:1}
+#top button{font-size:22px;border:0;background:none;cursor:pointer}
+#center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;z-index:1}
+.logoMain{width:110px;height:110px;background:#fff;border-radius:50%;display:grid;place-items:center;box-shadow:0 8px 24px #0001;margin-bottom:16px;overflow:hidden}
+.logoMain img{width:100%;height:100%;object-fit:cover}
+#title{font-size:28px;font-weight:700;font-family:'Plus Jakarta Sans'}
+#subtitle{color:#666;font-size:14px;margin-top:6px;line-height:1.5}
+#msgs{max-width:760px;width:100%;margin:0 auto;flex:1;overflow:auto;padding:14px;display:none;flex-direction:column;gap:12px;z-index:1}
+.msg{padding:12px 16px;border-radius:16px;max-width:88%;font-size:14.5px;line-height:1.6;white-space:pre-wrap}
+.msg.user{align-self:flex-end;background:#0A5C36;color:#fff;border-bottom-right-radius:4px}
+.msg.ai{align-self:flex-start;background:#fff;border:1px solid #eee;border-bottom-left-radius:4px}
+#inputArea{max-width:760px;width:100%;margin:0 auto;padding:12px;z-index:1}
+.wrap{background:#fff;border:1px solid #e8ddd0;border-radius:22px;padding:10px 12px;box-shadow:0 4px 20px #0001}
+.wrap textarea{width:100%;border:0;outline:0;resize:none;font-size:15px;background:transparent;font-family:inherit}
+.bottom{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.icon{width:36px;height:36px;border-radius:50%;border:0;background:#f3efe8;display:grid;place-items:center;cursor:pointer;font-size:16px}
 .icon.black{background:#111;color:#fff}
 #login{position:fixed;inset:0;background:#fdfcf8;z-index:200;display:none;align-items:center;justify-content:center;padding:18px}
 #login.show{display:flex}
-.card{background:#fff;width:100%;max-width:360px;padding:24px;border-radius:18px;box-shadow:0 10px 30px #0001}
-.btn{width:100%;padding:12px;border-radius:12px;border:1px solid #ddd;background:#fff;margin-top:10px;font-weight:600;cursor:pointer}
+.card{background:#fff;width:100%;max-width:370px;padding:26px;border-radius:20px;box-shadow:0 10px 30px #0001;border:1px solid #f0ebe3}
+.btn{width:100%;padding:12px;border-radius:12px;border:1px solid #ddd;background:#fff;margin-top:10px;font-weight:600;cursor:pointer;display:flex;justify-content:center;gap:8px;align-items:center}
 .btn.primary{background:#0A5C36;color:#fff;border-color:#0A5C36}
 .row{display:flex;gap:8px;margin-top:10px}
-.row select{width:110px;padding:12px;border-radius:12px;border:1px solid #ddd}
+.row select{width:115px;padding:12px;border-radius:12px;border:1px solid #ddd}
 .row input{flex:1;padding:12px;border-radius:12px;border:1px solid #ddd}
 .rec{flex:1;overflow:auto;margin-top:12px;border-top:1px solid #e9e3d8;padding-top:10px}
-.recItem{padding:8px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.recItem{padding:9px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;border-radius:8px}
+.recItem:hover{background:#ebe6dc}
+#fileInput{display:none}
 </style>
 </head>
 <body>
 <div id="sidebar">
-<div style="display:flex;justify-content:space-between"><b>ABU SAIF</b><button onclick="toggleMenu()" style="border:0;background:none">✕</button></div>
-<div class="rec"><div style="font-size:11px;color:#999;margin-bottom:8px">RECENTS</div><div id="recList"></div></div>
-<div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto"><div id="avatar" style="width:36px;height:36px;border-radius:50%;background:#e9a57a;display:grid;place-items:center;color:#fff;font-weight:700">MA</div><button onclick="newChat()" style="background:#111;color:#fff;border:0;padding:8px 14px;border-radius:20px">+ New chat</button></div>
+<div style="display:flex;justify-content:space-between;align-items:center"><b>ABU SAIF</b><button onclick="toggleMenu()" style="border:0;background:none;font-size:20px">✕</button></div>
+<div class="rec"><div style="font-size:11px;color:#999;margin-bottom:8px;letter-spacing:1px">RECENTS</div><div id="recList"></div></div>
+<div style="margin-top:auto;border-top:1px solid #e8e3d8;padding-top:12px">
+<div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;gap:8px;align-items:center"><div id="avatar" style="width:36px;height:36px;border-radius:50%;background:#0A5C36;display:grid;place-items:center;color:#fff;font-weight:700">MA</div><span id="sideName" style="font-size:13px;font-weight:600"></span></div><button onclick="logout()" style="font-size:12px;background:#fff;border:1px solid #ddd;padding:6px 10px;border-radius:8px;cursor:pointer">Logout</button></div>
+<button onclick="newChat()" style="width:100%;margin-top:10px;background:#111;color:#fff;border:0;padding:10px;border-radius:20px;cursor:pointer">+ New chat</button>
+</div>
 </div>
 <div id="overlay" onclick="toggleMenu()"></div>
 
 <div id="main">
-<div id="top"><button onclick="toggleMenu()">☰</button><span>👻</span></div>
+<div id="top"><button onclick="toggleMenu()">☰</button><div style="width:32px;height:32px;border-radius:50%;background:#fff;overflow:hidden;display:grid;place-items:center;box-shadow:0 2px 8px #0001"><img src="https://i.ibb.co/ymYv8G0j/abusaif-logo.png" style="width:100%" onerror="this.style.display='none'"></div></div>
 <div id="center">
-<div class="logo">🇧🇩</div>
+<div class="logoMain"><img src="https://i.ibb.co/ymYv8G0j/abusaif-logo.png" onerror="this.parentElement.textContent='🇧🇩'" alt="logo"></div>
 <h1 id="title">Here we go!</h1>
-<p>Assalamu Alaikum<br>I'm ABU SAIF Ummah BD</p>
-<div class="badge">Free plan · <b onclick="showLogin()">Upgrade</b></div>
+<p id="subtitle">Assalamu Alaikum<br>I'm ABU SAIF Ummah BD</p>
 </div>
 <div id="msgs"></div>
 <div id="inputArea">
 <div class="wrap">
-<textarea id="inp" placeholder="Chat with ABU SAIF" rows="1"></textarea>
+<textarea id="inp" placeholder="Chat with ABU SAIF Ummah BD" rows="1"></textarea>
 <div class="bottom">
-<button class="icon">+</button>
-<div style="display:flex;gap:6px;align-items:center"><span style="font-size:11px;background:#f2ece3;padding:6px 10px;border-radius:16px">Sonnet 5.5 Medium</span><button class="icon">🎤</button><button class="icon black" onclick="send()">➤</button></div>
+<button class="icon" onclick="document.getElementById('fileInput').click()">+</button>
+<input type="file" id="fileInput" accept="image/*,.pdf,.txt">
+<div style="display:flex;gap:6px"><button class="icon" id="micBtn" onclick="startMic()">🎤</button><button class="icon black" onclick="send()">➤</button></div>
 </div>
 </div>
-<p style="text-align:center;font-size:10px;color:#aaa;margin-top:6px">ABU SAIF can make mistakes. Please verify.</p>
+<p style="text-align:center;font-size:10px;color:#aaa;margin-top:6px">ABU SAIF Ummah BD • Built in Bangladesh</p>
 </div>
 </div>
 
 <div id="login">
 <div class="card">
-<h3>Welcome to ABU SAIF</h3><p style="font-size:12px;color:#777;margin:6px 0 14px">Login to save chats</p>
-<button class="btn" onclick="googleLogin()">🔵 Continue with Google</button>
-<div style="text-align:center;margin:10px 0;color:#aaa;font-size:11px">OR</div>
-<div class="row"><select id="country"><option value="+880">🇧🇩 +880</option><option value="+966">🇸🇦 +966</option><option value="+91">🇮🇳 +91</option><option value="+1">🇺🇸 +1</option></select><input id="phone" placeholder="17xxxxxxxx"></div>
+<h3 style="font-family:'Plus Jakarta Sans'">Welcome to ABU SAIF</h3><p style="font-size:12px;color:#777;margin:6px 0 14px">Login to save your chats</p>
+<button class="btn" onclick="googleLogin()"> <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="18"> Continue with Google</button>
+<div style="text-align:center;margin:12px 0;color:#aaa;font-size:11px">OR</div>
+<div class="row"><select id="country"><option value="+880">🇧🇩 +880</option><option value="+966">🇸🇦 +966</option><option value="+91">🇮🇳 +91</option><option value="+1">🇺🇸 +1</option><option value="+971">🇦🇪 +971</option><option value="+60">🇲🇾 +60</option></select><input id="phone" placeholder="17xxxxxxxx"></div>
 <button class="btn primary" onclick="phoneLogin()">Continue with Number</button>
 <button class="btn" onclick="hideLogin()" style="border:0;color:#777">Skip for now</button>
 </div>
 </div>
 
 <script>
-let chats=JSON.parse(localStorage.getItem('abusaif_chats')||'[]');
+let chats=JSON.parse(localStorage.getItem('abusaif_chats_v3')||'[]');
 let current=null;
-let user=JSON.parse(localStorage.getItem('abusaif_user')||'null');
+let user=JSON.parse(localStorage.getItem('abusaif_user_v3')||'null');
 function toggleMenu(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
 function showLogin(){document.getElementById('login').classList.add('show')}
 function hideLogin(){document.getElementById('login').classList.remove('show')}
-function googleLogin(){localStorage.setItem('abusaif_user',JSON.stringify({name:'Asad'}));location.reload()}
-function phoneLogin(){let c=document.getElementById('country').value;let p=document.getElementById('phone').value;if(p.length<6){alert('Number dao');return}localStorage.setItem('abusaif_user',JSON.stringify({name:p}));location.reload()}
+function googleLogin(){let u={name:'MD. ASADUZZAMAN',email:'asad@gmail.com'};localStorage.setItem('abusaif_user_v3',JSON.stringify(u));location.reload()}
+function phoneLogin(){let c=document.getElementById('country').value;let p=document.getElementById('phone').value.trim();if(p.length<6){alert('সঠিক নাম্বার দিন');return}let u={name:p,phone:c+p};localStorage.setItem('abusaif_user_v3',JSON.stringify(u));location.reload()}
+function logout(){localStorage.removeItem('abusaif_user_v3');location.reload()}
 function newChat(){current=null;document.getElementById('center').style.display='flex';document.getElementById('msgs').style.display='none';document.getElementById('msgs').innerHTML=''}
 function render(){let l=document.getElementById('recList');l.innerHTML='';chats.slice().reverse().forEach(ch=>{let d=document.createElement('div');d.className='recItem';d.textContent='💬 '+ch.title;d.onclick=()=>{current=ch;document.getElementById('center').style.display='none';let m=document.getElementById('msgs');m.style.display='flex';m.innerHTML='';ch.msgs.forEach(x=>addUI(x.text,x.role));toggleMenu()};l.appendChild(d)})}
-function addUI(t,r){let m=document.getElementById('msgs');let d=document.createElement('div');d.className='msg '+(r==='user'?'user':'ai');d.textContent=t.slice(0,2000);m.appendChild(d);m.scrollTop=m.scrollHeight}
-function send(){let i=document.getElementById('inp');let txt=i.value.trim();if(!txt)return;if(!current){current={id:Date.now()+'',title:txt.slice(0,25),msgs:[]};chats.push(current)}document.getElementById('center').style.display='none';document.getElementById('msgs').style.display='flex';addUI(txt,'user');current.msgs.push({role:'user',text:txt});i.value='';localStorage.setItem('abusaif_chats',JSON.stringify(chats));render();setTimeout(()=>{let reply='Wa Alaikum Assalam! You said: '+txt+'. I am ABU SAIF Ummah BD.';addUI(reply,'ai');current.msgs.push({role:'ai',text:reply});localStorage.setItem('abusaif_chats',JSON.stringify(chats))},500)}
-if(!user)setTimeout(showLogin,600);
+function addUI(t,r){let m=document.getElementById('msgs');let d=document.createElement('div');d.className='msg '+(r==='user'?'user':'ai');d.textContent=t; m.appendChild(d); m.scrollTop=m.scrollHeight}
+function smartReply(q){
+q=q.toLowerCase();
+if(q.includes('কুরআন')||q.includes('কোরআন')||q.includes('quran')||q.includes('কিরাত')) return "আলহামদুলিল্লাহ! পবিত্র কুরআন তিলাওয়াতের জন্য:\n\n1. সূরা ফাতিহা দিয়ে শুরু করুন\n2. তারতীল সহকারে, ধীরে ধীরে পড়ুন\n3. প্রতিদিন ফজরের পর 1 পারা তিলাওয়াতের চেষ্টা করুন\n\nআপনি কোন সূরা বা কোন ক্বারীর কিরাত শুনতে চান? মিশারী রাশেদ, আবু সাইফের মতো সুন্দর কিরাত দিতে পারি।";
+if(q.includes('নামাজ')||q.includes('নামায')||q.includes('prayer')||q.includes('সালাত')) return "আজকের নামাজের সময় (ঢাকা):\nফজর: 4:45 AM\nযোহর: 12:05 PM\nআসর: 4:15 PM\nমাগরিব: 6:30 PM\nইশা: 7:50 PM\n\nকিবলা: 277° উত্তর-পশ্চিমে। আল্লাহ আপনার নামাজ কবুল করুন।";
+if(q.includes('যাকাত')||q.includes('zakat')) return "যাকাত হিসাব: আপনার সম্পদ যদি 87.48 গ্রাম স্বর্ণ বা 612.36 গ্রাম রৌপ্যের সমান হয় এবং 1 বছর থাকে, তাহলে 2.5% যাকাত দিতে হবে।\n\nযেমন 1 লাখ টাকায় যাকাত = 2500 টাকা।";
+if(q.includes('দোয়া')||q.includes('দোয়া')||q.includes('dua')) return "গুরুত্বপূর্ণ দোয়া:\n\nঘুমানোর দোয়া: আল্লাহুম্মা বিসমিকা আমুতু ওয়া আহইয়া\n\nআপনি কোন বিষয়ের দোয়া চান?";
+if(q.includes('বাংলা')||q.includes('bangla')) return "জি, আমি বাংলায় খুব ভালো বলতে পারি। আপনি বাংলায় যেকোনো প্রশ্ন করুন - ইসলাম, কুরআন, হাদিস, দৈনন্দিন জীবন, আমি ইনশাআল্লাহ সাহায্য করব। "+user.name+" ভাই, আর কি জানতে চান?";
+return "Assalamu Alaikum "+(user?user.name:"")+" ভাই! আপনি বলেছেন: \""+q+"\"\n\nআমি ABU SAIF Ummah BD, বাংলাদেশে তৈরি ইসলামিক AI। আমি আপনাকে কুরআন, হাদিস, নামাজ, যাকাত, দোয়া, ইসলামিক ইতিহাস সব বিষয়ে সাহায্য করতে পারি।\n\nআরেকটু বিস্তারিত বলুন, ইনশাআল্লাহ সুন্দর করে বুঝিয়ে দিচ্ছি।";
+}
+function send(){let i=document.getElementById('inp');let txt=i.value.trim();if(!txt)return;if(!current){current={id:Date.now()+'',title:txt.slice(0,30),msgs:[]};chats.push(current)}document.getElementById('center').style.display='none';document.getElementById('msgs').style.display='flex';addUI(txt,'user');current.msgs.push({role:'user',text:txt});i.value='';localStorage.setItem('abusaif_chats_v3',JSON.stringify(chats));render();setTimeout(()=>{let reply=smartReply(txt);addUI(reply,'ai');current.msgs.push({role:'ai',text:reply});localStorage.setItem('abusaif_chats_v3',JSON.stringify(chats))},400)}
+// mic
+function startMic(){
+let SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SpeechRecognition){alert('Mic এই ব্রাউজারে সাপোর্ট করে না, Chrome ব্যবহার করুন');return}
+let rec=new SpeechRecognition();rec.lang='bn-BD';rec.start();document.getElementById('micBtn').textContent='🔴';
+rec.onresult=e=>{document.getElementById('inp').value=e.results[0][0].transcript};
+rec.onend=()=>{document.getElementById('micBtn').textContent='🎤'}
+}
+// file
+document.getElementById('fileInput').addEventListener('change',e=>{let f=e.target.files[0];if(!f)return;document.getElementById('inp').value='[File: '+f.name+'] ';alert(f.name+' আপলোড হয়েছে (ডেমো)')})
+// init
+if(user){
+document.getElementById('title').innerHTML='Assalamu Alaikum, '+user.name.slice(0,15)+'! <br>Here we go!';
+document.getElementById('subtitle').innerHTML='Welcome back to ABU SAIF Ummah BD<br>আপনার জন্য কি করতে পারি?';
+document.getElementById('avatar').textContent=user.name.slice(0,2).toUpperCase();
+document.getElementById('sideName').textContent=user.name;
+}else setTimeout(showLogin,700);
 render();
 document.getElementById('inp').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
+document.getElementById('inp').addEventListener('input',function(){this.style.height='auto';this.style.height=this.scrollHeight+'px'});
 </script>
 </body>
 </html>
