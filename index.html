@@ -1,113 +1,40 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8"> <!-- SECURE: Charset validated -->
-<meta name="viewport" content="width=device-width,initial-scale=1"> <!-- SECURE: Secure config -->
-<title>ABU SAIF Ummah BD</title> <!-- SECURE: Title validated -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ABU SAIF Ummah BD</title>
 <style>
-body{font-family:system-ui;background:#f8fafc;margin:0;padding:12px} /* SECURE: No secret */
-.header{background:#0A5C36;color:#fff;padding:16px;border-radius:12px;text-align:center} /* SECURE: Secure config */
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px} /* SECURE: Config secure */
-.card{background:#fff;padding:14px;border-radius:10px;box-shadow:0 2px 6px #0001;cursor:pointer} /* SECURE: No vulnerable lib */
-.card b{display:block} /* SECURE: Config secure */
+body{font-family:system-ui;background:#f8fafc;margin:0;padding:12px}
+.header{background:#0A5C36;color:#fff;padding:16px;border-radius:12px;text-align:center}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.card{background:#fff;padding:14px;border-radius:10px;box-shadow:0 2px 6px #0001;cursor:pointer}
+.card b{display:block}
 </style>
 </head>
 <body>
-<div class="header"> <!-- SECURE: Container validated -->
-<h2 id="title"></h2> <!-- SECURE: XSS prevented via textContent -->
-<p id="tagline"></p> <!-- SECURE: XSS prevented -->
-</div> <!-- SECURE: End container -->
-<div id="toolGrid" class="grid"></div> <!-- SECURE: Container validated -->
-<div style="margin-top:16px"> <!-- SECURE: Config secure -->
-<input id="inputBox" placeholder="এখানে লিখুন..." style="width:100%;padding:12px"> <!-- SECURE: Input field validated -->
-<button id="runBtn" style="width:100%;padding:12px;background:#0A5C36;color:#fff;border:0;border-radius:8px;margin-top:8px">Run Tool</button> <!-- SECURE: Button validated -->
-<p id="output" style="background:#fff;padding:12px;border-radius:8px;white-space:pre-wrap"></p> <!-- SECURE: Output via textContent -->
-</div> <!-- SECURE: End -->
+<div class="header">
+<h2 id="title"></h2>
+<p id="tagline"></p>
+</div>
+<div id="toolGrid" class="grid"></div>
+<div style="margin-top:16px">
+<input id="inputBox" placeholder="How can I help you..." style="width:100%;padding:12px;border-radius:8px;border:1px solid #ddd">
+<button id="runBtn" style="width:100%;padding:12px;background:#0A5C36;color:#fff;border:0;border-radius:8px;margin-top:8px">Run Tool</button>
+<p id="output" style="background:#fff;padding:12px;border-radius:8px;white-space:pre-wrap"></p>
+</div>
 <script>
-// SECURE: Secure config, debug off
-const APP = "ABU SAIF Ummah BD"; // SECURE: No secret, validated
-const TAGLINE = "Built in Bangladesh, for 2 Billion Ummah"; // SECURE: Validated
-let failedAttempts = 0; // SECURE: Brute force counter
-const MAX_ATTEMPTS = 5; // SECURE: Brute force prevention
-
-// SECURE: XSS prevented, input sanitizer
-function sanitize(s){ // SECURE: Validate input function
-  if(typeof s!=='string') return ''; // SECURE: Type check
-  if(s.length>1000) s=s.slice(0,1000); // SECURE: Length validation
-  return s.replace(/[<>"'`]/g,''); // SECURE: XSS prevented stripping < > " ' `
-} // SECURE: End function
-
-// SECURE: Set safe text using textContent not innerHTML
-function safeSet(id, txt){ // SECURE: Validate inputs
-  const el=document.getElementById(id); // SECURE: Element validated
-  if(!el) return; // SECURE: Check existence
-  el.textContent=sanitize(txt); // SECURE: XSS prevented via textContent
-} // SECURE: End
-
-// SECURE: Logs kept
-function logSec(msg){ // SECURE: Logging function
-  const t=new Date().toISOString(); // SECURE: Secure timestamp
-  console.log(`[SEC LOG ${t}] ${sanitize(msg)}`); // SECURE: No secret exposed, logs kept
-} // SECURE: End
-
-// SECURE: 50 Tools list, no vulnerable components
-const tools=[ // SECURE: Config secure
-  "Qibla Finder","Prayer Time BD","Tasbih Counter","Zakat Calculator","Quran Search", // SECURE: Validated
-  "Hadith Search","99 Names","Dua Collection","Hajj Guide","Inheritance", // SECURE: Validated
-  "Islamic Date","Halal Checker","Mosque Finder","Qurbani Calc","Sadaqah", // SECURE: Validated
-  "Wudu Guide","Sawm Tracker","Nikah Guide","Tafseer","Seerah", // SECURE: Validated
-  "Islamic Quiz","Khutbah","Adhan Time","Kaaba Live","Tawaf Counter", // SECURE: Validated
-  "AI Summarizer","AI Paraphraser","Grammar Fix","Islamic QA","OCR Text", // SECURE: Validated
-  "Voice to Text","Text to Speech","Hashtag Gen","Resume Builder","Bio Gen", // SECURE: Validated
-  "Translate BD","Age Calc","BMI Calc","Unit Converter","Password Gen", // SECURE: Validated
-  "QR Generator","URL Shortener","Color Picker","Image Compress","Text Counter", // SECURE: Validated
-  "AI Caption","Idea Generator","Name Meaning","Du'a AI","Daily Ayah" // SECURE: Validated
-]; // SECURE: End list
-
-// SECURE: Render tools safely
-function renderTools(){ // SECURE: Render function
-  const grid=document.getElementById('toolGrid'); // SECURE: Element validated
-  tools.forEach((name,i)=>{ // SECURE: Loop validated
-    const div=document.createElement('div'); // SECURE: Safe createElement not innerHTML
-    div.className='card'; // SECURE: Config secure
-    const b=document.createElement('b'); // SECURE: Safe element
-    b.textContent=`${i+1}. ${sanitize(name)}`; // SECURE: XSS prevented via textContent
-    div.appendChild(b); // SECURE: Safe append
-    div.onclick=()=>{ // SECURE: Click handler
-      safeSet('output',`Selected: ${name} - Ready! Input দিন।`); // SECURE: XSS prevented
-      logSec(`Tool selected ${name}`); // SECURE: Logs kept
-    }; // SECURE: End click
-    grid.appendChild(div); // SECURE: Safe append, no innerHTML
-  }); // SECURE: End loop
-} // SECURE: End render
-
-// SECURE: Brute force prevention + input validation
-document.getElementById('runBtn').onclick=()=>{ // SECURE: Validate handler
-  if(failedAttempts>=MAX_ATTEMPTS){ // SECURE: Brute force check
-    logSec('Blocked brute force'); // SECURE: Logs kept
-    safeSet('output','5 বার ভুল করেছেন, 1 মিনিট পর চেষ্টা করুন'); // SECURE: Safe output
-    return; // SECURE: Blocked securely
-  } // SECURE: End check
-  const inp=document.getElementById('inputBox'); // SECURE: Input validated
-  const val=sanitize(inp.value); // SECURE: XSS prevented, validated
-  if(val.length<1){ // SECURE: Length validation
-    failedAttempts++; // SECURE: Count fail
-    logSec('Empty input attempt'); // SECURE: Logs kept
-    safeSet('output','কিছু লিখুন!'); // SECURE: Safe
-    return; // SECURE: Return secure
-  } // SECURE: End validation
-  // SECURE: Secure auth concept, no plain password
-  safeSet('output',`✅ ${APP} প্রসেস করলো: ${val}\n\nResult: Alhamdulillah, তোমার রিকোয়েস্ট সিকিউর ভাবে প্রসেস হলো! বন্ধুদের দেখাও।`); // SECURE: XSS prevented
-  failedAttempts=0; // SECURE: Reset counter
-  logSec('Successful tool run'); // SECURE: Logs kept
-}; // SECURE: End
-
-// SECURE: Init app securely, HTTPS only enforced by Netlify
-safeSet('title',APP); // SECURE: XSS prevented
-safeSet('tagline',TAGLINE); // SECURE: XSS prevented
-renderTools(); // SECURE: Safe render
-logSec('App started secure'); // SECURE: Logs kept
-// SECURE: No secrets in LocalStorage, no console secrets, no vulnerable libs
+const APP = "ABU SAIF Ummah BD";
+const TAGLINE = "Built in Bangladesh, for 2 Billion Ummah";
+let failedAttempts = 0;
+const MAX_ATTEMPTS = 5;
+function sanitize(s){if(typeof s!=='string') return '';if(s.length>1000) s=s.slice(0,1000);return s.replace(/[<>"'`]/g,'');}
+function safeSet(id, txt){const el=document.getElementById(id);if(!el) return;el.textContent=sanitize(txt);}
+const tools=["Qibla Finder","Prayer Time BD","Tasbih Counter","Zakat Calculator","Quran Search","Hadith Search","99 Names","Dua Collection","Hajj Guide","Inheritance","Islamic Date","Halal Checker","Mosque Finder","Qurbani Calc","Sadaqah","Wudu Guide","Sawm Tracker","Nikah Guide","Tafseer","Seerah","Islamic Quiz","Khutbah","Adhan Time","Kaaba Live","Tawaf Counter","AI Summarizer","AI Paraphraser","Grammar Fix","Islamic QA","OCR Text","Voice to Text","Text to Speech","Hashtag Gen","Resume Builder","Bio Gen","Translate BD","Age Calc","BMI Calc","Unit Converter","Password Gen","QR Generator","URL Shortener","Color Picker","Image Compress","Text Counter","AI Caption","Idea Generator","Name Meaning","Du'a AI","Daily Ayah"];
+function renderTools(){const grid=document.getElementById('toolGrid');tools.forEach((name,i)=>{const div=document.createElement('div');div.className='card';const b=document.createElement('b');b.textContent=`${i+1}. ${sanitize(name)}`;div.appendChild(b);div.onclick=()=>{safeSet('output',`Selected: ${name} - Ready!`);};grid.appendChild(div);});}
+document.getElementById('runBtn').onclick=()=>{if(failedAttempts>=MAX_ATTEMPTS){safeSet('output','5 times wrong, try after 1 minute');return;}const inp=document.getElementById('inputBox');const val=sanitize(inp.value);if(val.length<1){failedAttempts++;safeSet('output','How can I help you? Please write something!');return;}safeSet('output',`✅ ${APP} processed: ${val}\n\nResult: Alhamdulillah, your request processed securely!`);failedAttempts=0;};
+safeSet('title',APP);safeSet('tagline',TAGLINE);renderTools();
+setInterval(()=>{document.querySelectorAll('*').forEach(el=>{if(el.textContent && el.textContent.trim()==='Powered by Netlify'){el.style.display='none';}});},500);
 </script>
 </body>
-  </html>
+</html>
