@@ -2,39 +2,137 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>ABU SAIF Ummah BD</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600&display=swap" rel="stylesheet">
 <style>
-body{font-family:system-ui;background:#f8fafc;margin:0;padding:12px}
-.header{background:#0A5C36;color:#fff;padding:16px;border-radius:12px;text-align:center}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.card{background:#fff;padding:14px;border-radius:10px;box-shadow:0 2px 6px #0001;cursor:pointer}
-.card b{display:block}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans','Hind Siliguri',system-ui;background:#fdfcf8;color:#111;display:flex;height:100vh;overflow:hidden}
+#sidebar{width:280px;background:#f5f3ef;border-right:1px solid #ece9e2;position:fixed;left:-280px;top:0;height:100%;z-index:99;transition:.3s;display:flex;flex-direction:column;padding:16px}
+#sidebar.open{left:0}
+#overlay{position:fixed;inset:0;background:#0005;display:none;z-index:98}
+#overlay.show{display:block}
+.menu-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:15px}
+.menu-item:hover{background:#ebe7df}
+#main{flex:1;display:flex;flex-direction:column;width:100%;margin-left:0;transition:.3s}
+#topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 18px}
+#topbar button{background:none;border:0;font-size:22px;cursor:pointer}
+#center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+.logo{width:92px;height:92px;border-radius:50%;background:#fff;box-shadow:0 8px 24px #0001;display:grid;place-items:center;margin-bottom:18px}
+.logo img{width:80px}
+#center h1{font-size:28px;font-weight:600;margin-bottom:8px}
+#center p{color:#6b6b6b;font-size:14px}
+.badge{background:#f1ede6;padding:8px 16px;border-radius:20px;font-size:13px;margin-top:18px}
+.badge b{cursor:pointer}
+#chatBox{padding:16px;max-width:780px;width:100%;margin:0 auto}
+.inputWrap{background:#fff;border:1px solid #e8e2d9;border-radius:22px;padding:12px 12px;box-shadow:0 4px 20px #0001}
+.inputWrap textarea{width:100%;border:0;outline:0;resize:none;font-size:16px;font-family:inherit;background:transparent;min-height:26px}
+.inputBottom{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.pill{background:#f2eeeb;padding:6px 12px;border-radius:20px;font-size:13px;display:flex;align-items:center;gap:6px}
+.iconBtn{width:36px;height:36px;border-radius:50%;border:0;background:#f3efea;display:grid;place-items:center;cursor:pointer}
+.iconBtn.black{background:#111;color:#fff}
+#recents{flex:1;overflow:auto;margin-top:10px;border-top:1px solid #e9e4db;padding-top:12px}
+.recTitle{font-size:12px;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.recItem{padding:10px 8px;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;border-radius:8px;display:flex;gap:8px}
+.recItem:hover{background:#ebe7df}
+#loginPage{position:fixed;inset:0;background:#fdfcf8;z-index:200;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+#loginPage.show{display:flex}
+.loginCard{background:#fff;width:100%;max-width:380px;padding:28px;border-radius:20px;box-shadow:0 10px 40px #0001;border:1px solid #f0ebe3}
+.loginCard h2{font-size:22px;margin-bottom:6px}
+.loginCard p{font-size:13px;color:#777;margin-bottom:18px}
+.btn{width:100%;padding:12px;border-radius:12px;border:1px solid #ddd;background:#fff;cursor:pointer;font-weight:600;margin-top:10px;display:flex;justify-content:center;align-items:center;gap:8px}
+.btn.primary{background:#0A5C36;color:#fff;border-color:#0A5C36}
+.input{width:100%;padding:12px;border:1px solid #ddd;border-radius:12px;margin-top:10px}
+.countryRow{display:flex;gap:8px;margin-top:10px}
+.countryRow select{width:120px;padding:12px;border-radius:12px;border:1px solid #ddd}
+.countryRow input{flex:1}
+#messages{width:100%;max-width:780px;margin:0 auto;flex:1;overflow:auto;padding:16px;display:none;flex-direction:column;gap:14px}
+.msg{padding:12px 14px;border-radius:14px;max-width:85%;line-height:1.5;font-size:14px}
+.msg.user{align-self:flex-end;background:#0A5C36;color:#fff}
+.msg.ai{align-self:flex-start;background:#fff;border:1px solid #eee}
 </style>
 </head>
 <body>
-<div class="header">
-<h2 id="title"></h2>
-<p id="tagline"></p>
+<div id="sidebar">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b style="font-family:'Plus Jakarta Sans'">ABU SAIF</b><button onclick="toggleMenu()" style="border:0;background:none;font-size:20px">✕</button></div>
+<div class="menu-item">💬 Chats</div>
+<div class="menu-item">📁 Projects</div>
+<div class="menu-item"> &lt;/&gt; Code</div>
+<div class="menu-item">📦 Artifacts</div>
+<div id="recents"><div class="recTitle">Recents</div><div id="recList"></div></div>
+<div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center"><div id="userAvatar" style="width:40px;height:40px;border-radius:50%;background:#e9a57a;display:grid;place-items:center;font-weight:700;color:#fff">MA</div><button onclick="newChat()" style="background:#111;color:#fff;border:0;padding:10px 18px;border-radius:24px;cursor:pointer">+ New chat</button></div>
 </div>
-<div id="toolGrid" class="grid"></div>
-<div style="margin-top:16px">
-<input id="inputBox" placeholder="How can I help you..." style="width:100%;padding:12px;border-radius:8px;border:1px solid #ddd">
-<button id="runBtn" style="width:100%;padding:12px;background:#0A5C36;color:#fff;border:0;border-radius:8px;margin-top:8px">Run Tool</button>
-<p id="output" style="background:#fff;padding:12px;border-radius:8px;white-space:pre-wrap"></p>
+<div id="overlay" onclick="toggleMenu()"></div>
+
+<div id="main">
+<div id="topbar"><button onclick="toggleMenu()">☰</button><button>👻</button></div>
+<div id="center">
+<div class="logo"><img src="https://i.ibb.co/5X8s9v0q/logo.png" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/8/89/Flag_of_Bangladesh_alternative.png'" alt="logo"></div>
+<h1 id="welcomeTitle">Here we go!</h1>
+<p id="welcomeSub">Assalamu Alaikum, I'm ABU SAIF Ummah BD<br>Built in Bangladesh, for 2 Billion Ummah</p>
+<div class="badge">Free plan · <b onclick="showLogin()">Upgrade</b></div>
 </div>
+<div id="messages"></div>
+<div id="chatBox">
+<div class="inputWrap">
+<textarea id="input" placeholder="Chat with ABU SAIF" rows="1" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+<div class="inputBottom">
+<button class="iconBtn">+</button>
+<div style="display:flex;gap:8px;align-items:center">
+<span class="pill">● Sonnet 5.5 Medium ▾</span>
+<button class="iconBtn">🎤</button>
+<button class="iconBtn black" onclick="sendMsg()">♪</button>
+</div>
+</div>
+</div>
+<p style="text-align:center;font-size:11px;color:#aaa;margin-top:8px">ABU SAIF can make mistakes. Please verify.</p>
+</div>
+</div>
+
+<div id="loginPage">
+<div class="loginCard">
+<h2>Welcome to ABU SAIF</h2>
+<p>Login to save your chats</p>
+<button class="btn" onclick="googleLogin()"><img src="https://www.svgrepo.com/show/475656/google-color.svg" width="18"> Continue with Google</button>
+<div style="text-align:center;margin:14px 0;color:#aaa;font-size:12px">OR</div>
+<div class="countryRow">
+<select id="country">
+<option value="+880">🇧🇩 +880</option>
+<option value="+966">🇸🇦 +966</option>
+<option value="+971">🇦🇪 +971</option>
+<option value="+91">🇮🇳 +91</option>
+<option value="+1">🇺🇸 +1</option>
+<option value="+44">🇬🇧 +44</option>
+<option value="+60">🇲🇾 +60</option>
+</select>
+<input id="phone" class="input" style="margin:0" placeholder="17xxxxxxxx">
+</div>
+<button class="btn primary" onclick="phoneLogin()">Continue with Number</button>
+<button class="btn" onclick="hideLogin()" style="border:0;color:#777">Skip for now</button>
+</div>
+</div>
+
 <script>
-const APP = "ABU SAIF Ummah BD";
-const TAGLINE = "Built in Bangladesh, for 2 Billion Ummah";
-let failedAttempts = 0;
-const MAX_ATTEMPTS = 5;
-function sanitize(s){if(typeof s!=='string') return '';if(s.length>1000) s=s.slice(0,1000);return s.replace(/[<>"'`]/g,'');}
-function safeSet(id, txt){const el=document.getElementById(id);if(!el) return;el.textContent=sanitize(txt);}
-const tools=["Qibla Finder","Prayer Time BD","Tasbih Counter","Zakat Calculator","Quran Search","Hadith Search","99 Names","Dua Collection","Hajj Guide","Inheritance","Islamic Date","Halal Checker","Mosque Finder","Qurbani Calc","Sadaqah","Wudu Guide","Sawm Tracker","Nikah Guide","Tafseer","Seerah","Islamic Quiz","Khutbah","Adhan Time","Kaaba Live","Tawaf Counter","AI Summarizer","AI Paraphraser","Grammar Fix","Islamic QA","OCR Text","Voice to Text","Text to Speech","Hashtag Gen","Resume Builder","Bio Gen","Translate BD","Age Calc","BMI Calc","Unit Converter","Password Gen","QR Generator","URL Shortener","Color Picker","Image Compress","Text Counter","AI Caption","Idea Generator","Name Meaning","Du'a AI","Daily Ayah"];
-function renderTools(){const grid=document.getElementById('toolGrid');tools.forEach((name,i)=>{const div=document.createElement('div');div.className='card';const b=document.createElement('b');b.textContent=`${i+1}. ${sanitize(name)}`;div.appendChild(b);div.onclick=()=>{safeSet('output',`Selected: ${name} - Ready!`);};grid.appendChild(div);});}
-document.getElementById('runBtn').onclick=()=>{if(failedAttempts>=MAX_ATTEMPTS){safeSet('output','5 times wrong, try after 1 minute');return;}const inp=document.getElementById('inputBox');const val=sanitize(inp.value);if(val.length<1){failedAttempts++;safeSet('output','How can I help you? Please write something!');return;}safeSet('output',`✅ ${APP} processed: ${val}\n\nResult: Alhamdulillah, your request processed securely!`);failedAttempts=0;};
-safeSet('title',APP);safeSet('tagline',TAGLINE);renderTools();
-setInterval(()=>{document.querySelectorAll('*').forEach(el=>{if(el.textContent && el.textContent.trim()==='Powered by Netlify'){el.style.display='none';}});},500);
+let chats = JSON.parse(localStorage.getItem('abusaif_chats')||'[]');
+let currentChat = null;
+let user = JSON.parse(localStorage.getItem('abusaif_user')||'null');
+
+function sanitize(s){if(typeof s!=='string')return'';return s.slice(0,2000)}
+function toggleMenu(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+function showLogin(){document.getElementById('loginPage').classList.add('show')}
+function hideLogin(){document.getElementById('loginPage').classList.remove('show')}
+function googleLogin(){localStorage.setItem('abusaif_user',JSON.stringify({name:'MD ASADUZZAMAN',email:'user@gmail.com'}));user={name:'MD ASADUZZAMAN'};hideLogin();updateUI();alert('Google Login Success (Demo)')}
+function phoneLogin(){let c=document.getElementById('country').value;let p=document.getElementById('phone').value;if(p.length<6){alert('Valid number dao');return}localStorage.setItem('abusaif_user',JSON.stringify({name:p,phone:c+p}));user={name:p};hideLogin();updateUI();alert('Number Login Success: '+c+p)}
+function updateUI(){if(user){document.getElementById('userAvatar').textContent=user.name.slice(0,2).toUpperCase();document.getElementById('welcomeTitle').textContent='Assalamu Alaikum, '+user.name.slice(0,12)+'!'}renderRecents()}
+function renderRecents(){let list=document.getElementById('recList');list.innerHTML='';chats.slice().reverse().forEach((ch,i)=>{let d=document.createElement('div');d.className='recItem';d.textContent='💬 '+(ch.title||'New Chat');d.onclick=()=>{loadChat(ch.id);toggleMenu()};list.appendChild(d)})}
+function newChat(){currentChat=null;document.getElementById('center').style.display='flex';document.getElementById('messages').style.display='none';document.getElementById('messages').innerHTML='';document.getElementById('input').value=''}
+function loadChat(id){let ch=chats.find(c=>c.id===id);if(!ch)return;currentChat=ch;document.getElementById('center').style.display='none';let m=document.getElementById('messages');m.style.display='flex';m.innerHTML='';ch.msgs.forEach(msg=>addMsgUI(msg.text,msg.role,false));}
+function addMsgUI(text,role,save=true){let m=document.getElementById('messages');let div=document.createElement('div');div.className='msg '+(role==='user'?'user':'ai');div.textContent=sanitize(text);m.appendChild(div);m.scrollTop=m.scrollHeight}
+function sendMsg(){let inp=document.getElementById('input');let txt=sanitize(inp.value.trim());if(!txt)return;if(!currentChat){currentChat={id:Date.now().toString(),title:txt.slice(0,30),msgs:[]};chats.push(currentChat)}document.getElementById('center').style.display='none';document.getElementById('messages').style.display='flex';addMsgUI(txt,'user');currentChat.msgs.push({role:'user',text:txt});inp.value='';inp.style.height='auto';localStorage.setItem('abusaif_chats',JSON.stringify(chats));renderRecents();setTimeout(()=>{let reply='Alhamdulillah! You said: "'+txt+'". I am ABU SAIF Ummah BD, your Islamic AI assistant. I will help you with Qibla, Prayer Time, Zakat, Quran, Hadith and 50+ tools, InshaAllah.';addMsgUI(reply,'ai');currentChat.msgs.push({role:'ai',text:reply});localStorage.setItem('abusaif_chats',JSON.stringify(chats))},600)}
+document.getElementById('input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()}});
+if(!user){setTimeout(showLogin,800)}else updateUI();renderRecents();
+// hide netlify badge robust
+setInterval(()=>{document.querySelectorAll('*').forEach(el=>{if(el.textContent&&el.textContent.includes('Powered by Netlify')){el.style.display='none'}})},500);
 </script>
 </body>
 </html>
